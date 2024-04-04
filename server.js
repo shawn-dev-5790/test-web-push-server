@@ -45,5 +45,9 @@ app.post("/subscribe", (req, res) => {
   WP.sendNotification(subscription, payload).catch((err) => console.error(err));
 });
 
+app.get("/ping", (req, res) => {
+  res.json({ msg: "pong" });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
