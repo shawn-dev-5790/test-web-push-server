@@ -37,7 +37,7 @@ app.post("/subscribe", (req, res) => {
   // Get pushSubscription object
   const subscription = req.body;
 
-  memoSubscription = JSON.parse(req.body);
+  memoSubscription = req.body;
 
   // Send 201 - resource created
   res.status(201).json({});
@@ -49,9 +49,9 @@ app.post("/subscribe", (req, res) => {
   WP.sendNotification(subscription, payload).catch((err) => console.error(err));
 });
 
-app.get("/send-notification", (req, res) => {
+app.get("/send", (req, res) => {
   if (!memoSubscription)
-    return res.status(500).json({ msg: "Subscription not found" });
+    return res.status(400).json({ msg: "Subscription not found" });
 
   const payload = JSON.stringify({
     title: "New Notification",
