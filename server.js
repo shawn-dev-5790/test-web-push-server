@@ -7,6 +7,8 @@ const morgan = require("morgan");
 
 const app = express();
 
+let subscription = null;
+
 // Set static folder
 app.use(express.static(path.join(__dirname, "client")));
 
@@ -35,6 +37,8 @@ app.post("/subscribe", (req, res) => {
   // Get pushSubscription object
   const subscription = req.body;
 
+  subscribe = JSON.parse(req.body);
+
   // Send 201 - resource created
   res.status(201).json({});
 
@@ -43,6 +47,27 @@ app.post("/subscribe", (req, res) => {
 
   // Pass object into sendNotification
   WP.sendNotification(subscription, payload).catch((err) => console.error(err));
+});
+
+app.get("/send-notification", (req, res) => {
+  if (!subscription)
+    return res.status(500).json({ msg: "Subscription not found" });
+
+  const payload = JSON.stringify({
+    title: "New Notification",
+    body: "This is a push notification sent from the server.",
+  });
+
+  // Send push notification to client
+  webPush
+    .sendNotification(subscription, payload)
+    .then(() => {
+      res.status(200).send("Notification sent successfully.");
+    })
+    .catch((error) => {
+      console.error("Error sending notification:", error);
+      res.status(500).send("Failed to send notification.");
+    });
 });
 
 app.get("/ping", (req, res) => {
