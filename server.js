@@ -59,8 +59,7 @@ app.get("/send", (req, res) => {
   });
 
   // Send push notification to client
-  webPush
-    .sendNotification(memoSubscription, payload)
+  WP.sendNotification(memoSubscription, payload)
     .then(() => {
       res.status(200).send("Notification sent successfully.");
     })
