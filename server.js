@@ -43,10 +43,10 @@ app.post("/subscribe", (req, res) => {
   res.status(201).json({});
 
   // Create payload
-  const payload = JSON.stringify({ title: "from server : Push Test" });
+  // const payload = JSON.stringify({ title: "from server : Push Test" });
 
   // Pass object into sendNotification
-  WP.sendNotification(subscription, payload).catch((err) => console.error(err));
+  // WP.sendNotification(subscription, payload).catch((err) => console.error(err));
 });
 
 app.get("/send", (req, res) => {
